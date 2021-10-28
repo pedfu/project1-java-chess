@@ -30,32 +30,29 @@ public class Board {
 
     public void placePiece(Piece piece, Position position) {
         if(thereIsAPiece(position)) {
-            throw new BoardException("There is already apiece on position " + position);
+            throw new BoardException("There is already a piece on position " + position);
         }
         pieces[position.getRow()][position.getColumn()] = piece;
         piece.position = position;
     }
-    /*
-        public Piece removePiece(Position position) {
-            this.pieces[position.getRow()][position.getRow()] = null; //SETAR "-"
+    public Piece removePiece(Position position) {
+        if(!positionExists(position)) {
+            throw new BoardException("Position not on the board");
         }
-    */
+        if(piece(position) == null) {
+            return null;
+        }
+        Piece aux = piece(position);
+        aux.position = null;
+        this.pieces[position.getRow()][position.getColumn()] = null; //SETAR "-"
+        return aux;
+    }
     public boolean positionExists(Position position) {
-        if(position.getColumn() < 8 && position.getRow() < 8) {
-            if(position.getRow() >= 0 && position.getColumn() >= 0) {
-                return true;
-            }
-        }
-        return false;
+        return positionExists(position.getRow(), position.getColumn());
     }
 
     public boolean positionExists(int row, int column) {
-        if(row < 8 && columns < 8) {
-            if(row >= 0 && columns >= 0) {
-                return true;
-            }
-        }
-        return false;
+        return row >=0 && row < rows && column >= 0 && column < columns;
     }
 
     public boolean thereIsAPiece(Position position) {

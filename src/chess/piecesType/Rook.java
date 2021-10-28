@@ -1,5 +1,6 @@
 package chess.piecesType;
 
+import application.UI;
 import boardgame.Board;
 import chess.ChessPiece;
 import chess.Color;
@@ -18,7 +19,7 @@ public class Rook extends ChessPiece {
     @Override
     public String toString() {
         if(this.getColor() == Color.WHITE) {
-            return "♜";
+            return "♜" ;
         } else {
             return "♖";
         }
