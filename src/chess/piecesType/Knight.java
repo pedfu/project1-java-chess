@@ -1,37 +1,73 @@
 package chess.piecesType;
 
+import boardgame.Board;
+import boardgame.Position;
 import chess.ChessPiece;
+import chess.Color;
 
-public class Knight /* extends ChessPiece*/ {/*
+public class Knight extends ChessPiece{
+    public Knight(Board board, Color color) {
+        super(board, color);
+    }
 
     @Override
     public boolean[][] possibleMoves() {
-        boolean[][] bArray = new boolean[8][8];
-        for(int i=0; i< bArray.length; i++) {
-            for(int j=0; j<bArray[i].length; j++) {
-                bArray[i][j] = false;
-            }
+        boolean[][] mat = new boolean[getBoard().getRows()][getBoard().getColumns()];
+
+        Position p = new Position(0,0);
+
+        //L up and right -+
+        p.setValues(position.getRow()-2, position.getColumn()+1);
+        if(getBoard().positionExists(p) && (!getBoard().thereIsAPiece(p) || isThereOpponentPiece(p))) {
+            mat[p.getRow()][p.getColumn()] = true;
         }
-        //verificar se a casa é menor q isso
-        if(getPosition().getRow() >= 2 && getPosition().getRow() <= 5) {
-            if(getPosition().getColumn() >= 2 && getPosition().getColumn() <= 5) {
-                bArray[getPosition().getRow() + 2][getPosition().getColumn() + 1] = true;
-                bArray[getPosition().getRow() + 2][getPosition().getColumn() - 1] = true;
-
-                bArray[getPosition().getRow() - 2][getPosition().getColumn() + 1] = true;
-                bArray[getPosition().getRow() - 2][getPosition().getColumn() - 1] = true;
-
-                bArray[getPosition().getRow() - 1][getPosition().getColumn() + 2] = true;
-                bArray[getPosition().getRow() + 1][getPosition().getColumn() + 2] = true;
-
-                bArray[getPosition().getRow() + 1][getPosition().getColumn() - 2] = true;
-                bArray[getPosition().getRow() - 1][getPosition().getColumn() - 2] = true;
-            } else if(getPosition().getColumn() >= 2) {
-
-            }
+        //L up and left --
+        p.setValues(position.getRow()-2, position.getColumn()-1);
+        if(getBoard().positionExists(p) && (!getBoard().thereIsAPiece(p)||isThereOpponentPiece(p))) {
+            mat[p.getRow()][p.getColumn()] = true;
+        }
+        //L down and right ++
+        p.setValues(position.getRow()+2, position.getColumn()+1);
+        if(getBoard().positionExists(p) && (!getBoard().thereIsAPiece(p)||isThereOpponentPiece(p))) {
+            mat[p.getRow()][p.getColumn()] = true;
+        }
+        //L down and left +-
+        p.setValues(position.getRow()+2, position.getColumn()-1);
+        if(getBoard().positionExists(p) && (!getBoard().thereIsAPiece(p)||isThereOpponentPiece(p))) {
+            mat[p.getRow()][p.getColumn()] = true;
         }
 
-        bArray[getPosition().getRow()][getPosition().getColumn()] = false; //piece cannot move to the same place
-        return bArray;
-    }*/
+
+        //L left and down
+        p.setValues(position.getRow()+1, position.getColumn()-2);
+        if(getBoard().positionExists(p) && (!getBoard().thereIsAPiece(p)||isThereOpponentPiece(p))) {
+            mat[p.getRow()][p.getColumn()] = true;
+        }
+        //L left and up
+        p.setValues(position.getRow()-1, position.getColumn()-2);
+        if(getBoard().positionExists(p) && (!getBoard().thereIsAPiece(p)||isThereOpponentPiece(p))) {
+            mat[p.getRow()][p.getColumn()] = true;
+        }
+        //L right and down
+        p.setValues(position.getRow()+1, position.getColumn()+2);
+        if(getBoard().positionExists(p) && (!getBoard().thereIsAPiece(p)||isThereOpponentPiece(p))) {
+            mat[p.getRow()][p.getColumn()] = true;
+        }
+        //L right and up
+        p.setValues(position.getRow()-1, position.getColumn()+2);
+        if(getBoard().positionExists(p) && (!getBoard().thereIsAPiece(p)||isThereOpponentPiece(p))) {
+            mat[p.getRow()][p.getColumn()] = true;
+        }
+
+        return mat;
+    }
+
+    @Override
+    public String toString() {
+        if(this.getColor() == Color.WHITE) {
+            return "♞";
+        } else {
+            return "♘";
+        }
+    }
 }
