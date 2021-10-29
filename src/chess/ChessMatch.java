@@ -103,8 +103,12 @@ public class ChessMatch {
 
         check = (testCheck(opponent(currentPlayer))) ? true : false;
 
+        if(testCheckMate(opponent(currentPlayer))) {
+            checkMate = true;
+        } else {
+            nextTurn();
+        }
 
-        nextTurn();
         return (ChessPiece) capturedPiece;
     }
 
@@ -127,7 +131,8 @@ public class ChessMatch {
     }
 
     private Piece makeMove(Position source, Position target) {
-        Piece sPiece = board.removePiece(source);
+        ChessPiece sPiece = (ChessPiece) board.removePiece(source);
+        sPiece.increaseMoveCount();
         Piece capturedPiece = board.removePiece(target);
         board.placePiece(sPiece, target);
 
@@ -139,7 +144,8 @@ public class ChessMatch {
     }
 
     private void undoMove(Position source, Position target, Piece capturedPiece) {
-        Piece p = board.removePiece(target);
+        ChessPiece p = (ChessPiece) board.removePiece(target);
+        p.decreaseMoveCount();
         board.placePiece(p, source);
 
         if(capturedPiece != null) {
@@ -174,10 +180,31 @@ public class ChessMatch {
         }
         return false;
     }
-/*
-    public ChessPiece replacePromotedPiece(String type) {
 
-    }*/
+    private boolean testCheckMate(Color color) {
+        if(!testCheck(color)) {
+            return false;
+        }
+        List<Piece> opponentPieces = piecesOnTheBoard.stream().filter(x -> ((ChessPiece)x).getColor() == color).collect(Collectors.toList());
+        for(Piece p : opponentPieces) {
+            boolean[][] mat = p.possibleMoves();
+            for(int i=0; i< board.getRows(); i++) {
+                for (int j=0; j< board.getColumns(); j++) {
+                    if(mat[i][j]) {
+                        Position source = ((ChessPiece)p).getChessPosition().toPosition();
+                        Position target = new Position(i,j);
+                        Piece capturedPiece = makeMove(source,target);
+                        boolean testCheck = testCheck(color);
+                        undoMove(source, target, capturedPiece);
+                        if(!testCheck) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
 
 
 
@@ -193,7 +220,7 @@ public class ChessMatch {
         return check;
     }
 
-    public boolean isCheckMate() {
+    public boolean getCheckMate() {
         return checkMate;
     }
 

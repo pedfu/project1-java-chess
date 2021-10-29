@@ -22,9 +22,11 @@ public class Pawn extends ChessPiece {
             p.setValues(position.getRow() - 1, position.getColumn());
             if (getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)) {
                 mat[p.getRow()][p.getColumn()] = true;
-                if (/*verificar se for a primeira jogada*/ turn <= 4) {
+                if (/*verificar se for a primeira jogada*/ getMoveCount() == 0) {
                     p.setValues(position.getRow() - 2, position.getColumn());
-                    mat[p.getRow()][p.getColumn()] = true;
+                    if(!getBoard().thereIsAPiece(p)) {
+                        mat[p.getRow()][p.getColumn()] = true;
+                    }
                 }
             }
 
