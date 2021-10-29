@@ -11,44 +11,45 @@ public class Bishop extends ChessPiece {
     }
 
     public boolean[][] possibleMoves () {
-        boolean[][] bArray = new boolean[8][8];/*
-        for (int i = 0; i < bArray.length; i++) {
-            for (int j = 0; j < bArray[i].length; j++) {
-                bArray[i][j] = false;
-            }
-        }
-        for (int i = 0; i + getPosition().getColumn() < 8; i++) {//ver se tem oeca ka
-            bArray[getPosition().getRow() + i][getPosition().getColumn() + i] = true;
+        boolean[][] mat = new boolean[getBoard().getRows()][getBoard().getColumns()];
 
-            if (isThereOpponentPiece(new Position(getPosition().getRow() + i,
-                    getPosition().getColumn() + i))) {
-                break;
-            }
-        }
-        for (int i = 0; getPosition().getColumn() - i >= 0; i++) {
-            bArray[getPosition().getRow() - i][getPosition().getColumn() - i] = true;
-            if (isThereOpponentPiece(new Position(getPosition().getRow() + i,
-                    getPosition().getColumn() + i))) {
-                break;
-            }
-        }
-        for (int i = 0; (i + getPosition().getColumn() < 8) && (getPosition().getColumn() - i >= 0); i++) {//ver se tem oeca ka
-            bArray[getPosition().getRow() + i][getPosition().getColumn() - i] = true;
+        Position p = new Position(0,0);
 
-            if (isThereOpponentPiece(new Position(getPosition().getRow() + i,
-                    getPosition().getColumn() - i))) {
-                break;
-            }
+        //diagonal
+        //++
+        p.setValues(position.getRow() + 1, position.getColumn() + 1);
+        while(getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)) {
+            mat[p.getRow()][p.getColumn()] = true;
+            p.setValues(p.getRow() + 1, p.getColumn() + 1);
+        } if(getBoard().positionExists(p) && isThereOpponentPiece(p)) {
+            mat[p.getRow()][p.getColumn()] = true;
         }
-        for (int i = 0; (i + getPosition().getColumn() < 8) && (getPosition().getColumn() - i >= 0); i++) {
-            bArray[getPosition().getRow() - i][getPosition().getColumn() + i] = true;
-            if (isThereOpponentPiece(new Position(getPosition().getRow() - i,
-                    getPosition().getColumn() + i))) {
-                break;
-            }
+        //--
+        p.setValues(position.getRow() - 1, position.getColumn() - 1);
+        while(getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)) {
+            mat[p.getRow()][p.getColumn()] = true;
+            p.setValues(p.getRow() - 1, p.getColumn() - 1);
+        } if(getBoard().positionExists(p) && isThereOpponentPiece(p)) {
+            mat[p.getRow()][p.getColumn()] = true;
         }
-        bArray[getPosition().getRow()][getPosition().getColumn()] = false;*/ //piece cannot move to the same place
-        return bArray;
+        //+-
+        p.setValues(position.getRow() + 1, position.getColumn() - 1);
+        while(getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)) {
+            mat[p.getRow()][p.getColumn()] = true;
+            p.setValues(p.getRow() + 1, p.getColumn() - 1);
+        } if(getBoard().positionExists(p) && isThereOpponentPiece(p)) {
+            mat[p.getRow()][p.getColumn()] = true;
+        }
+        //-+
+        p.setValues(position.getRow() - 1, position.getColumn() + 1);
+        while(getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)) {
+            mat[p.getRow()][p.getColumn()] = true;
+            p.setValues(p.getRow() - 1, p.getColumn() + 1);
+        } if(getBoard().positionExists(p) && isThereOpponentPiece(p)) {
+            mat[p.getRow()][p.getColumn()] = true;
+        }
+
+        return mat;
     }
 
     @Override

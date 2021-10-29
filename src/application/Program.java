@@ -7,19 +7,19 @@ import chess.*;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Program {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         ChessMatch cm = new ChessMatch();
-        ArrayList<Piece> whiteCapturedPieces = new ArrayList<>();
-        ArrayList<Piece> blackCapturedPieces = new ArrayList<>();
+        List<ChessPiece> captured = new ArrayList<>();
 
         while(true) {
             try{
                 UI.clearScreen();
-                UI.printBoard(cm.getPieces());
+                UI.printMatch(cm, captured);
                 System.out.println();
                 System.out.print("Source: ");
                 ChessPosition source = UI.readChessPosition(scanner);
@@ -33,7 +33,11 @@ public class Program {
                 ChessPosition target = UI.readChessPosition(scanner);
 
                 ChessPiece capturedPiece = cm.performChessMove(source, target);
+
                 if(capturedPiece != null) {
+                    captured.add(capturedPiece);
+                }
+                /*if(capturedPiece != null) {
                     if(capturedPiece.getColor() == Color.WHITE) {
                         whiteCapturedPieces.add(capturedPiece);
                     } else {
@@ -50,7 +54,7 @@ public class Program {
                     for (Piece piece : blackCapturedPieces) {
                         System.out.print(piece + " ");
                     }
-                }
+                }*/
             } catch (ChessException e) {
                 System.out.println(e.getMessage());
                 scanner.nextLine();
