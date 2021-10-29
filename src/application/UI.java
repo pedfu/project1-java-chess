@@ -33,6 +33,7 @@ public class UI {
     public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
     public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
 
+
     public static ChessPosition readChessPosition(Scanner scanner) {
         //letra e numero a1
         try {
@@ -50,15 +51,30 @@ public class UI {
         for (int i = 0; i < pieces.length; i++) {
             System.out.print((8 - i) + " ");
             for (int j = 0; j < pieces.length; j++) {
-                printPiece(pieces[i][j]);
+                printPiece(pieces[i][j], false);
             }
                 System.out.println();
             }
         for (int i = 0; i < pieces.length; i++) {System.out.print("\t" + (char)('a' + i));}
     }
 
+    public static void printBoard(ChessPiece[][] pieces, boolean[][] possibleMoves) {
+        for (int i = 0; i < pieces.length; i++) {
+            System.out.print((8 - i) + " ");
+            for (int j = 0; j < pieces.length; j++) {
+                printPiece(pieces[i][j], possibleMoves[i][j]);
+            }
+            System.out.println();
+        }
+        for (int i = 0; i < pieces.length; i++) {System.out.print("\t" + (char)('a' + i));}
+    }
 
-    private static void printPiece(ChessPiece piece) {
+
+    private static void printPiece(ChessPiece piece, boolean background) {
+        if(background) {
+            System.out.print(ANSI_BLUE_BACKGROUND);
+        }
+
         int n = 0;
         if (piece == null) {/*
             if(n%2==0) {
@@ -70,7 +86,7 @@ public class UI {
                     n++;
                 }
             }*/
-            System.out.print("\t⬜");
+            System.out.print("\t⬜" + ANSI_RESET);
         } else {/*
             if (piece.getColor() == Color.WHITE) {
                 System.out.print(ANSI_WHITE + piece + ANSI_RESET);
@@ -86,7 +102,7 @@ public class UI {
                     n++;
                 }
             }*/
-            System.out.print("\t" +piece);
+            System.out.print("\t" +piece + ANSI_RESET);
            // System.out.print("\t"+UI.ANSI_WHITE_BACKGROUND+piece+ UI.ANSI_RESET);
         }
     }
