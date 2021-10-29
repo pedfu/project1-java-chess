@@ -12,7 +12,13 @@ public class Pawn extends ChessPiece {
     }
 
     public boolean[][] possibleMoves() {
-        boolean[][] bArray = new boolean[8][8];/*
+        boolean[][] bArray = new boolean[8][8];
+        for(int i=0; i<bArray.length; i++) {
+            for(int j=0; j<bArray[i].length; j++) {
+                bArray[i][j] = true;
+            } //inicializa tudo como falso
+        }
+        /*
         for(int i=0; i<bArray.length; i++) {
             for(int j=0; j<bArray[i].length; j++) {
                 bArray[i][j] = false;

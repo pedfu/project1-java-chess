@@ -13,14 +13,17 @@ public abstract class ChessPiece extends Piece {
         this.color = color;
         //this.moveCount = moveCount;
     }
+
+    protected boolean isThereOpponentPiece(Position position) {
+        ChessPiece p = (ChessPiece) getBoard().piece(position);
+        return p != null && p.getColor() != color;
+    }
 /*
     public ChessPosition getChessPosition() {
 
     }
 
-    protected boolean isThereOpponentPiece(Position position) {
 
-    }
 
     protected void increaseMoveCount() {
 
