@@ -63,9 +63,7 @@ public class Pawn extends ChessPiece {
             }
         }
         //se jogar, aumentar turn
-        System.out.println(turn);
         increaseTurn();
-        System.out.println(turn);
         return mat;
     }
 
