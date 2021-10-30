@@ -62,6 +62,15 @@ public class Program {
                         System.out.print("Enter piece for promotion (♖ ♘ ♗ ♕): ");
                     }
                     String type = scanner.nextLine();
+                    while(!type.equals("♜") && !type.equals("♞") && !type.equals( "♝") && !type.equals("♛") && !type.equals("♜") && !type.equals("♞") && !type.equals( "♝") && !type.equals("♛")) {
+                        System.out.print("Invalid value! ");
+                        if(cm.getCurrentPlayer() == Color.WHITE) {
+                            System.out.print("Enter piece for promotion (♜ ♞ ♝ ♛): ");
+                        } else {
+                            System.out.print("Enter piece for promotion (♖ ♘ ♗ ♕): ");
+                        }
+                        type = scanner.nextLine();
+                    }
                     cm.replacePromotedPiece(type);
                 }
             } catch (ChessException e) {
