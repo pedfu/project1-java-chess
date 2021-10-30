@@ -83,6 +83,8 @@ public class ChessMatch {
         placeNewPiece('d', 8 ,new Queen(board, Color.BLACK));
         for(int i=0; i<8; i++) {  placeNewPiece((char)('a' + i), 7, new Pawn(board, Color.BLACK, this));  }
 
+
+        //placeNewPiece('f', 7, new Pawn(board, Color.WHITE, this));
     }
     public boolean[][] possibleMoves(ChessPosition sourcePosition) {
         Position position = sourcePosition.toPosition();
@@ -103,6 +105,19 @@ public class ChessMatch {
 
         ChessPiece movedPiece = (ChessPiece)board.piece(target);
 
+        //#Promotion
+        promoted = null;
+        if(movedPiece instanceof Pawn) {
+            if((movedPiece.getColor() == Color.WHITE && target.getRow() == 0)) {
+                promoted = (ChessPiece) board.piece(target);
+                promoted = replacePromotedPiece("♛");
+            } else if((movedPiece.getColor() == Color.BLACK && target.getRow() == 7)) {
+                promoted = (ChessPiece) board.piece(target);
+                promoted = replacePromotedPiece("♕");
+            }
+        }
+
+
         check = (testCheck(opponent(currentPlayer))) ? true : false;
 
         if(testCheckMate(opponent(currentPlayer))) {
@@ -119,6 +134,36 @@ public class ChessMatch {
         }
 
         return (ChessPiece) capturedPiece;
+    }
+
+    public ChessPiece replacePromotedPiece(String type) {
+        if(promoted == null) {
+            throw new IllegalStateException("There is no piece to be promoted");
+        }
+        Position pos = promoted.getChessPosition().toPosition();
+        Piece p = board.removePiece(pos);
+        piecesOnTheBoard.remove(p);
+
+        ChessPiece newPiece = newPiece(type, promoted.getColor());
+        board.placePiece(newPiece, pos);
+        piecesOnTheBoard.add(newPiece);
+
+        return newPiece;
+    }
+
+    private ChessPiece newPiece(String type, Color color) {
+        if(color == Color.WHITE) {
+            if(type.equals("♝")) {  return new Bishop(board, color);  }
+            if(type.equals("♞")) {  return new Knight(board, color);  }
+            if(type.equals("♜")) {  return new Rook(board, color);  }
+            if(type.equals("♛")) {  return new Queen(board, color);  }
+        } else if(color == Color.BLACK) {
+            if(type.equals("♗")) {  return new Bishop(board, color);  }
+            if(type.equals("♘")) {  return new Knight(board, color);  }
+            if(type.equals("♖")) {  return new Rook(board, color);  }
+            if(type.equals("♕")) {  return new Queen(board, color);  }
+        }
+        return null;
     }
 
     private void validateSourcePosition(Position position) {
@@ -297,19 +342,11 @@ public class ChessMatch {
         return checkMate;
     }
 
-    public void setCheckMate(boolean checkMate) {
-        this.checkMate = checkMate;
-    }
-
     public ChessPiece getEnPassantVulnerable() {
         return enPassantVulnerable;
     }
 
     public ChessPiece getPromoted() {
         return promoted;
-    }
-
-    public void setPromoted(ChessPiece promoted) {
-        this.promoted = promoted;
     }
 }

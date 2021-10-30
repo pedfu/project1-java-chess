@@ -55,6 +55,15 @@ public class Program {
                         System.out.print(piece + " ");
                     }
                 }*/
+                if(cm.getPromoted() != null) {
+                    if(cm.getCurrentPlayer() == Color.WHITE) {
+                        System.out.print("Enter piece for promotion (♜ ♞ ♝ ♛): ");
+                    } else {
+                        System.out.print("Enter piece for promotion (♖ ♘ ♗ ♕): ");
+                    }
+                    String type = scanner.nextLine();
+                    cm.replacePromotedPiece(type);
+                }
             } catch (ChessException e) {
                 System.out.println(e.getMessage());
                 scanner.nextLine();
